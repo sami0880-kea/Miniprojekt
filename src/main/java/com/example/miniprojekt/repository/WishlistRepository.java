@@ -18,8 +18,8 @@ public class WishlistRepository {
         try (Connection con = DriverManager.getConnection(db_url, uid, pwd))
         {
             String SQL = "SELECT * FROM wishlist;";
-            Statement stnt = con.createStatement();
-            ResultSet rs = stnt.executeQuery(SQL);
+            Statement stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery(SQL);
             while (rs.next()) {
                 int id = rs.getInt("id");
                 String title = rs.getString("title");
