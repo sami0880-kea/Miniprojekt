@@ -9,6 +9,8 @@ public class Wishlist {
     private Date createdAt;
     private int userId;
 
+    public Wishlist() {}
+
     public Wishlist(int id, String title, String description, Date createdAt, int userId) {
         this.id = id;
         this.title = title;
@@ -35,5 +37,36 @@ public class Wishlist {
 
     public int getUserId() {
         return userId;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
+
+    @Override
+    public String toString() {
+        return "Wishlist{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                ", createdAt=" + createdAt +
+                ", userId=" + userId +
+                '}';
     }
 }

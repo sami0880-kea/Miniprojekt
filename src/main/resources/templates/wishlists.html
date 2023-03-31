@@ -15,6 +15,7 @@
         <th scope="col">Description</th>
         <th scope="col">Created At</th>
         <th scope="col">User ID</th>
+        <th scope="col">Items</th>
     </tr>
     </thead>
 
@@ -25,9 +26,10 @@
         <td th:text="${wish.description}"/>
         <td th:text="${wish.createdAt}"/>
         <td th:text="${wish.userId}"/>
+        <td><a class="btn btn-primary" type="button" th:href="@{'/items/' + ${wish.id}}">Items</a></td>
     </tr>
     </tbody>
 </table>
-<button class="btn btn-success" type="button">Add Wish</button>
+<a class="btn btn-success" type="button" th:href="@{'/create/wishlist'}">Add Wish</a>
 </body>
 </html>

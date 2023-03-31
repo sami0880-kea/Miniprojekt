@@ -8,16 +8,18 @@ public class WishlistItem {
     private String description;
     private double price;
     private String url;
+    private String imageUrl;
     private Date createdAt;
 
     private int wishlistId;
 
-    public WishlistItem(int id, String name, String description, double price, String url, Date createdAt, int wishlistId) {
+    public WishlistItem(int id, String name, String description, double price, String url, String imageUrl, Date createdAt, int wishlistId) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.price = price;
         this.url = url;
+        this.imageUrl = imageUrl;
         this.createdAt = createdAt;
         this.wishlistId = wishlistId;
     }
@@ -40,6 +42,10 @@ public class WishlistItem {
 
     public String getUrl() {
         return url;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
     }
 
     public Date getCreatedAt() {
