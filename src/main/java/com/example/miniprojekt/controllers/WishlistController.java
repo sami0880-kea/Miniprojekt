@@ -36,8 +36,6 @@ public class WishlistController {
     }
 
 
-
-
     @GetMapping("/create/wishlist")
     public String createWishlist(Model model) {
         Wishlist wishlist = new Wishlist();
@@ -75,6 +73,12 @@ public class WishlistController {
     public ResponseEntity<List<Wishlist>> getWishlist(@PathVariable int id){
         List<Wishlist> wishlist = wishlistRepository.getWishlist(id);
         return new ResponseEntity<>(wishlist, HttpStatus.OK);
+    }
+
+    @GetMapping("/delete/{id}")
+    public String deleteSuperhero(@PathVariable int id){
+        wishlistRepository.deleteWishlist(id);
+        return "redirect:/wishlists";
     }
 
 }

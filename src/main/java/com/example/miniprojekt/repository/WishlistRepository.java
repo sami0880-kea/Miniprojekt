@@ -13,7 +13,7 @@ import java.util.List;
 public class WishlistRepository {
     private final String db_url = "jdbc:mysql://localhost:3306/wishlistdatabase";
     private final String uid = "root";
-    private final String pwd = "Samim123";
+    private final String pwd = "!Wzy92Eft123";
 
     public List<Wishlist> getWishlists() {
         List<Wishlist> wishlists = new ArrayList<>();
@@ -155,6 +155,24 @@ public class WishlistRepository {
             pstmt.setDate(3, new java.sql.Date(new java.util.Date().getTime()));
 
             pstmt.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void deleteWishlist (int wishlistID){
+        try(Connection con = DriverManager.getConnection(db_url,uid,pwd)) {
+            String SQL = "DELETE FROM wishlistItem WHERE wishlistId = ?;";
+            PreparedStatement pstmt = con.prepareStatement(SQL);
+            pstmt.setInt(1,wishlistID);
+            pstmt.executeUpdate();
+
+            String SQL2 = "DELETE FROM wishlist WHERE wishlistId = ?;";
+            PreparedStatement pstmt2 = con.prepareStatement(SQL2);
+            pstmt2.setInt(1,wishlistID);
+            pstmt2.executeUpdate();
+
+
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
