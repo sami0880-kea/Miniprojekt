@@ -148,20 +148,11 @@ public class WishlistRepository {
     public void createWishlist(Wishlist wishlist) {
         try (Connection con = DriverManager.getConnection(db_url, uid, pwd))
         {
-            String getNextIdSQL = "SELECT MAX(wishlistId) FROM wishlist;";
-            PreparedStatement getNextIdStmt = con.prepareStatement(getNextIdSQL);
-            ResultSet rs = getNextIdStmt.executeQuery();
-            int nextId = 1;
-            if (rs.next()) {
-                nextId = rs.getInt(1) + 1;
-            }
-
-            String SQL = "INSERT INTO `wishlist` (`wishlistId`, `userId`, `title`, `description`, `createdAt`) VALUES (?, 101, ?, ?, ?);";
+            String SQL = "INSERT INTO `wishlist` (`userId`, `title`, `description`, `createdAt`) VALUES (1, ?, ?, ?);";
             PreparedStatement pstmt = con.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS);
-            pstmt.setInt(1, nextId);
-            pstmt.setString(2, wishlist.getTitle());
-            pstmt.setString(3, wishlist.getDescription());
-            pstmt.setDate(4, new java.sql.Date(new java.util.Date().getTime()));
+            pstmt.setString(1, wishlist.getTitle());
+            pstmt.setString(2, wishlist.getDescription());
+            pstmt.setDate(3, new java.sql.Date(new java.util.Date().getTime()));
 
             pstmt.executeUpdate();
         } catch (SQLException e) {
