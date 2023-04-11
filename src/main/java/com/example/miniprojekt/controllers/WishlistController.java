@@ -8,14 +8,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
-import java.sql.SQLException;
 import java.util.List;
 
+@RequestMapping("/")
 @Controller
 public class WishlistController {
     WishlistRepository wishlistRepository;
@@ -44,28 +41,24 @@ public class WishlistController {
     }
 
     @PostMapping("/create/wishlist")
-    public String createWishlist(@ModelAttribute("wishlist") Wishlist wishlist) throws SQLException {
+    public String createWishlist(@ModelAttribute("wishlist") Wishlist wishlist) {
         wishlistRepository.createWishlist(wishlist);
         return "wishlistCreated";
     }
-    @GetMapping("/add/wishlistItem")
-    public String addWishlistItem(Model model) {
+
+    @GetMapping("/addItem/{id}")
+    public String addItem(@PathVariable int id, Model model) {
         WishlistItem wishlistItem = new WishlistItem();
+        wishlistItem.setWishlistId(id);
         model.addAttribute("wishlistItem", wishlistItem);
         return "addWishlistItem";
     }
 
-    @PostMapping("/add/wishlistItem")
-    public String addWishlistItem(@ModelAttribute("wishlist") WishlistItem wishlistItem) throws SQLException {
+    @PostMapping("/addItem")
+    public String addItem(@ModelAttribute("wishlistItem") WishlistItem wishlistItem) {
         wishlistRepository.addWishlistItem(wishlistItem);
-        return "redirect:/wishlists";
+        return "redirect:/items/" + wishlistItem.getWishlistId();
     }
-
-//    @GetMapping(path = "/wishlist/items/{id}")
-//    public ResponseEntity<List<WishlistItem>> getWishlistItems(@PathVariable int id){
-//        List<WishlistItem> wishlistItems = wishlistRepository.getWishlistItems(id);
-//        return new ResponseEntity<>(wishlistItems, HttpStatus.OK);
-//    }
 
     @GetMapping(path = "/item2/{id}")
     public ResponseEntity<List<WishlistItem>> getItem(@PathVariable int id){
@@ -77,6 +70,8 @@ public class WishlistController {
     public String getItem(Model model, @PathVariable int id) {
         WishlistItemDTO wishlistItems = wishlistRepository.getWishlistItems(id);
         model.addAttribute("wishlistTitle", wishlistItems.getWishlistTitle());
+        model.addAttribute("wishlistId", id);
+
         model.addAttribute("itemList", wishlistItems.getWishlistItems());
         return "wishlistItems";
     }

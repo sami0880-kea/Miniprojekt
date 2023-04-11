@@ -10,7 +10,7 @@
 <body>
 <h1>Add WishlistItem</h1>
 
-<form action="#" th:action="@{/add/wishlistitem}" method="post" th:object="${wishlistItem}">
+<form th:action="@{/addItem}" th:object="${wishlistItem}" method="post" >
   <div>
     <label>Name</label>
     <input type="text" th:field="*{name}"/>

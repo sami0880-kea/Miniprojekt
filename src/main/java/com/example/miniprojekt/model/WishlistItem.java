@@ -12,8 +12,8 @@ public class WishlistItem {
     private String url;
     private String imageUrl;
     private Date createdAt;
-
     private int wishlistId;
+
     public WishlistItem() {
     }
 
@@ -58,5 +58,51 @@ public class WishlistItem {
 
     public int getWishlistId() {
         return wishlistId;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public void setWishlistId(int wishlistId) {
+        this.wishlistId = wishlistId;
+    }
+
+    @Override
+    public String toString() {
+        return "WishlistItem{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", price=" + price +
+                ", url='" + url + '\'' +
+                ", imageUrl='" + imageUrl + '\'' +
+                ", createdAt=" + createdAt +
+                ", wishlistId=" + wishlistId +
+                '}';
     }
 }

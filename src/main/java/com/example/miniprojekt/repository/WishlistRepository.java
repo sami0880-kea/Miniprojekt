@@ -13,7 +13,7 @@ import java.util.List;
 public class WishlistRepository {
     private final String db_url = "jdbc:mysql://localhost:3306/wishlistdatabase";
     private final String uid = "root";
-    private final String pwd = "!Wzy92Eft123";
+    private final String pwd = "Samim123";
 
     public List<Wishlist> getWishlists() {
         List<Wishlist> wishlists = new ArrayList<>();
@@ -181,8 +181,8 @@ public class WishlistRepository {
     public void addWishlistItem(WishlistItem wishlistItem) {
         try (Connection con = DriverManager.getConnection(db_url, uid, pwd))
         {
-            String SQL = "INSERT INTO `wishlistitem` (`name`, `description`, `price`, `url`, `imageurl`, `createdAt`, `wishlistId`) VALUES (?, ?, ?, ?, ?, ?, ?);";
-            PreparedStatement pstmt = con.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS);
+            String SQL = "INSERT INTO wishlistItem (`name`, `description`, `price`, `url`, `imageUrl`, `createdAt`, `wishlistId`) VALUES (?, ?, ?, ?, ?, ?, ?);";
+            PreparedStatement pstmt = con.prepareStatement(SQL);
             pstmt.setString(1, wishlistItem.getName());
             pstmt.setString(2, wishlistItem.getDescription());
             pstmt.setDouble(3, wishlistItem.getPrice());
