@@ -3,6 +3,8 @@ package com.example.miniprojekt.model;
 import java.util.Date;
 
 public class WishlistItem {
+
+
     private int id;
     private String name;
     private String description;
@@ -12,6 +14,8 @@ public class WishlistItem {
     private Date createdAt;
 
     private int wishlistId;
+    public WishlistItem() {
+    }
 
     public WishlistItem(int id, String name, String description, double price, String url, String imageUrl, Date createdAt, int wishlistId) {
         this.id = id;

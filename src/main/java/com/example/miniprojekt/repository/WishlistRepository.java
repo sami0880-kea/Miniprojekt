@@ -176,5 +176,24 @@ public class WishlistRepository {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+
+    }
+    public void addWishlistItem(WishlistItem wishlistItem) {
+        try (Connection con = DriverManager.getConnection(db_url, uid, pwd))
+        {
+            String SQL = "INSERT INTO `wishlistitem` (`name`, `description`, `price`, `url`, `imageurl`, `createdAt`, `wishlistId`) VALUES (?, ?, ?, ?, ?, ?, ?);";
+            PreparedStatement pstmt = con.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS);
+            pstmt.setString(1, wishlistItem.getName());
+            pstmt.setString(2, wishlistItem.getDescription());
+            pstmt.setDouble(3, wishlistItem.getPrice());
+            pstmt.setString(4, wishlistItem.getUrl());
+            pstmt.setString(5, wishlistItem.getImageUrl());
+            pstmt.setDate(6, new java.sql.Date(new java.util.Date().getTime()));
+            pstmt.setInt(7, wishlistItem.getWishlistId());
+
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

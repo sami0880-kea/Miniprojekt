@@ -48,6 +48,18 @@ public class WishlistController {
         wishlistRepository.createWishlist(wishlist);
         return "wishlistCreated";
     }
+    @GetMapping("/add/wishlistItem")
+    public String addWishlistItem(Model model) {
+        WishlistItem wishlistItem = new WishlistItem();
+        model.addAttribute("wishlistItem", wishlistItem);
+        return "addWishlistItem";
+    }
+
+    @PostMapping("/add/wishlistItem")
+    public String addWishlistItem(@ModelAttribute("wishlist") WishlistItem wishlistItem) throws SQLException {
+        wishlistRepository.addWishlistItem(wishlistItem);
+        return "redirect:/wishlists";
+    }
 
 //    @GetMapping(path = "/wishlist/items/{id}")
 //    public ResponseEntity<List<WishlistItem>> getWishlistItems(@PathVariable int id){
