@@ -14,7 +14,7 @@ import java.util.List;
 public class WishlistRepository {
     private final String db_url = "jdbc:mysql://localhost:3306/wishlistdatabase";
     private final String uid = "root";
-    private final String pwd = "!Wzy92Eft123";
+    private final String pwd = "Samim123";
 
     public List<Wishlist> getWishlists() {
         List<Wishlist> wishlists = new ArrayList<>();
@@ -23,6 +23,28 @@ public class WishlistRepository {
             String SQL = "SELECT * FROM wishlist;";
             Statement stmt = con.createStatement();
             ResultSet rs = stmt.executeQuery(SQL);
+            while (rs.next()) {
+                int id = rs.getInt("wishlistId");
+                String title = rs.getString("title");
+                String description = rs.getString("description");
+                Date createdAt = rs.getDate("createdAt");
+                int userId = rs.getInt("userId");
+                wishlists.add(new Wishlist(id, title, description, createdAt, userId));
+            }
+            return wishlists;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public List<Wishlist> getUserWishlists(int getId) {
+        List<Wishlist> wishlists = new ArrayList<>();
+        try (Connection con = DriverManager.getConnection(db_url, uid, pwd))
+        {
+            String SQL = "SELECT * FROM wishlist WHERE userId = ?;";
+            PreparedStatement pstmt = con.prepareStatement(SQL);
+            pstmt.setInt(1, getId);
+            ResultSet rs = pstmt.executeQuery();
             while (rs.next()) {
                 int id = rs.getInt("wishlistId");
                 String title = rs.getString("title");
@@ -200,7 +222,7 @@ public class WishlistRepository {
 
     public void addSignUp (User signUp) {
         try (Connection con = DriverManager.getConnection(db_url, uid, pwd)) {
-            String SQL = "INSERT INTO user ('name', 'email', 'password') VALUES (?, ?, ?);";
+            String SQL = "INSERT INTO user (name, email, password) VALUES (?, ?, ?);";
             PreparedStatement pstmt = con.prepareStatement(SQL);
             pstmt.setString(1, signUp.getName());
             pstmt.setString(2, signUp.getEmail());

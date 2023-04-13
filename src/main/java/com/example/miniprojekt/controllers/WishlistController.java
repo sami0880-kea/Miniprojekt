@@ -27,25 +27,25 @@ public class WishlistController {
     }
 
     @PostMapping("/login")
-    public String login(@RequestParam("email")String email,@RequestParam("pw") String pw,
-                        HttpSession session,
-                        Model model)
+    public String login(@RequestParam("email")String email,@RequestParam("pw") String pw, HttpSession session, Model model)
     {
         User user = wishlistRepository.getUser(email);
-        System.out.println(user);
 
-        if (user != null) {
+        if (user != null)
             if (user.getPassword().equals(pw)) {
                 session.setAttribute("user", user);
-                session.setMaxInactiveInterval(30);
-                return "wishlists";
+                session.setMaxInactiveInterval(60);
+                return "redirect:/wishlists";
             }
-        }
         model.addAttribute("wrongCredentials", true);
         return "login";
     }
 
-
+    @GetMapping("/logout")
+    public String logout(HttpSession session) {
+        session.invalidate();
+        return "redirect:/";
+    }
 
     @GetMapping(path = "/all")
     public ResponseEntity<List<Wishlist>> getWishlists(){
@@ -54,21 +54,24 @@ public class WishlistController {
     }
 
     @GetMapping(path = "/wishlists")
-    public String getWishlists(Model model){
-        List<Wishlist> wishlists = wishlistRepository.getWishlists();
+    public String getWishlists(Model model, HttpSession session){
+        User user = (User) session.getAttribute("user");
+        List<Wishlist> wishlists = wishlistRepository.getUserWishlists(user.getId());
         model.addAttribute("wishlist", wishlists);
         return "wishlists";
     }
 
-    @GetMapping("/addSignUp")
-    public String signUp() {
+    @GetMapping("/signup")
+    public String signUp(Model model) {
+        User user = new User();
+        model.addAttribute("user", user);
         return "signup";
     }
 
-    @PostMapping("/addSignUp")
-    public String addSignUp(@ModelAttribute("User") User signup) {
-        wishlistRepository.addSignUp(signup);
-        return "index";
+    @PostMapping("/signup")
+    public String addSignUp(@ModelAttribute("user") User user) {
+        wishlistRepository.addSignUp(user);
+        return "redirect:/";
     }
 
 

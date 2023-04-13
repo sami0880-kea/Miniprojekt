@@ -10,21 +10,21 @@
 <div class="vh-100 d-flex justify-content-center align-items-center">
   <div class="col-md-4 p-5 shadow-sm border rounded-4">
     <h2 class="text-center mb-4">Sign up</h2>
-    <form action="/addSignUp" method="post">
+    <form action="#" th:action="@{/signup}" method="post" th:object="${user}">
       <div class="mb-3">
         <label class="form-label">Name</label>
-        <input type="text" name="name" class="form-control border border-primary">
+        <input type="text" name="name" class="form-control border border-primary" th:field="*{name}">
       </div>     <div class="mb-3">
         <label class="form-label">Email</label>
-        <input type="email" name="email" class="form-control border border-primary">
+        <input type="email" name="email" class="form-control border border-primary" th:field="*{email}">
       </div>
       <div class="mb-3">
         <label class="form-label">Password</label>
-        <input type="password" name="pw" class="form-control border border-primary">
+        <input type="password" name="password" class="form-control border border-primary" th:field="*{password}">
       </div>
       <div class="d-grid">
         <button class="btn btn-primary p-2 m-1" type="submit">Sign up</button>
-        <a class="btn btn-light p-2 m-1" th:href="@{'/login'}">Login</a>
+        <a class="btn btn-light p-2 m-1" th:href="@{'/'}">Login</a>
       </div>
     </form>
   </div>
