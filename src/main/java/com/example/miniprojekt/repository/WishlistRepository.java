@@ -198,13 +198,13 @@ public class WishlistRepository {
         }
     }
 
-    public User getUser(String uid) {
+    public User getUser(String isEmail) {
         User user = null;
         try (Connection con = DriverManager.getConnection(db_url, uid, pwd))
         {
             String SQL = "SELECT * FROM User WHERE email = ?;";
             PreparedStatement pstmt = con.prepareStatement(SQL);
-            pstmt.setString(1, uid);
+            pstmt.setString(1, isEmail);
             ResultSet rs = pstmt.executeQuery();
             if (rs.next()) {
                 int id = rs.getInt("userId");
