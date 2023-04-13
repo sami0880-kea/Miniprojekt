@@ -60,6 +60,11 @@ public class WishlistController {
         return "wishlists";
     }
 
+    @GetMapping("/signup")
+    public String signUp() {
+        return "signup";
+    }
+
 
     @GetMapping("/create/wishlist")
     public String createWishlist(Model model) {

@@ -14,7 +14,7 @@ import java.util.List;
 public class WishlistRepository {
     private final String db_url = "jdbc:mysql://localhost:3306/wishlistdatabase";
     private final String uid = "root";
-    private final String pwd = "root";
+    private final String pwd = "Samim123";
 
     public List<Wishlist> getWishlists() {
         List<Wishlist> wishlists = new ArrayList<>();
