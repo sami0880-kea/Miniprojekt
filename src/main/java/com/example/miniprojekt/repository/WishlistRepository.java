@@ -14,7 +14,7 @@ import java.util.List;
 public class WishlistRepository {
     private final String db_url = "jdbc:mysql://localhost:3306/wishlistdatabase";
     private final String uid = "root";
-    private final String pwd = "Samim123";
+    private final String pwd = "!Wzy92Eft123";
 
     public List<Wishlist> getWishlists() {
         List<Wishlist> wishlists = new ArrayList<>();
@@ -197,6 +197,21 @@ public class WishlistRepository {
             throw new RuntimeException(e);
         }
     }
+
+    public void addSignUp (User signUp) {
+        try (Connection con = DriverManager.getConnection(db_url, uid, pwd)) {
+            String SQL = "INSERT INTO user ('name', 'email', 'password') VALUES (?, ?, ?);";
+            PreparedStatement pstmt = con.prepareStatement(SQL);
+            pstmt.setString(1, signUp.getName());
+            pstmt.setString(2, signUp.getEmail());
+            pstmt.setString(3, signUp.getPassword());
+
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 
     public User getUser(String isEmail) {
         User user = null;

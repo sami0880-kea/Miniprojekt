@@ -60,9 +60,15 @@ public class WishlistController {
         return "wishlists";
     }
 
-    @GetMapping("/signup")
+    @GetMapping("/addSignUp")
     public String signUp() {
         return "signup";
+    }
+
+    @PostMapping("/addSignUp")
+    public String addSignUp(@ModelAttribute("User") User signup) {
+        wishlistRepository.addSignUp(signup);
+        return "index";
     }
 
 
