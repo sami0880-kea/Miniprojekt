@@ -1,6 +1,7 @@
 package com.example.miniprojekt.repository;
 
 import com.example.miniprojekt.dto.WishlistItemDTO;
+import com.example.miniprojekt.model.User;
 import com.example.miniprojekt.model.Wishlist;
 import com.example.miniprojekt.model.WishlistItem;
 import org.springframework.stereotype.Repository;
@@ -13,7 +14,7 @@ import java.util.List;
 public class WishlistRepository {
     private final String db_url = "jdbc:mysql://localhost:3306/wishlistdatabase";
     private final String uid = "root";
-    private final String pwd = "Samim123";
+    private final String pwd = "root";
 
     public List<Wishlist> getWishlists() {
         List<Wishlist> wishlists = new ArrayList<>();
@@ -192,6 +193,27 @@ public class WishlistRepository {
             pstmt.setInt(7, wishlistItem.getWishlistId());
 
             pstmt.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public User getUser(String uid) {
+        User user = null;
+        try (Connection con = DriverManager.getConnection(db_url, uid, pwd))
+        {
+            String SQL = "SELECT * FROM User WHERE email = ?;";
+            PreparedStatement pstmt = con.prepareStatement(SQL);
+            pstmt.setString(1, uid);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                int id = rs.getInt("userId");
+                String name = rs.getString("name");
+                String email = rs.getString("email");
+                String password = rs.getString("password");
+                user = new User(id,name,email,password);
+            }
+            return user;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

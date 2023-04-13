@@ -1,9 +1,11 @@
 package com.example.miniprojekt.controllers;
 
 import com.example.miniprojekt.dto.WishlistItemDTO;
+import com.example.miniprojekt.model.User;
 import com.example.miniprojekt.model.Wishlist;
 import com.example.miniprojekt.model.WishlistItem;
 import com.example.miniprojekt.repository.WishlistRepository;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -23,6 +25,27 @@ public class WishlistController {
     public String homePage() {
         return "index";
     }
+
+    @PostMapping("/login")
+    public String login(@RequestParam("email")String email,@RequestParam("pw") String pw,
+                        HttpSession session,
+                        Model model)
+    {
+        User user = wishlistRepository.getUser(email);
+        System.out.println(user);
+
+        if (user != null) {
+            if (user.getPassword().equals(pw)) {
+                session.setAttribute("user", user);
+                session.setMaxInactiveInterval(30);
+                return "wishlists";
+            }
+        }
+        model.addAttribute("wrongCredentials", true);
+        return "login";
+    }
+
+
 
     @GetMapping(path = "/all")
     public ResponseEntity<List<Wishlist>> getWishlists(){
