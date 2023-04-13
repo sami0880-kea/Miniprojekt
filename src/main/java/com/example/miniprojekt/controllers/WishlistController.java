@@ -19,6 +19,11 @@ public class WishlistController {
 
     public WishlistController () { wishlistRepository = new WishlistRepository(); }
 
+    @GetMapping("/")
+    public String homePage() {
+        return "index";
+    }
+
     @GetMapping(path = "/all")
     public ResponseEntity<List<Wishlist>> getWishlists(){
         List<Wishlist> wishlists = wishlistRepository.getWishlists();
@@ -87,5 +92,4 @@ public class WishlistController {
         wishlistRepository.deleteWishlist(id);
         return "redirect:/wishlists";
     }
-
 }

@@ -17,6 +17,10 @@ public class WishlistItem {
     public WishlistItem() {
     }
 
+    public WishlistItem(int id) {
+        this.id = id;
+    }
+
     public WishlistItem(int id, String name, String description, double price, String url, String imageUrl, Date createdAt, int wishlistId) {
         this.id = id;
         this.name = name;
