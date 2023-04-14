@@ -35,6 +35,25 @@
     </tr>
     </tbody>
 </table>
+
+<div class="py-5 ">
+    <div class="container">
+        <div class="row hidden-md-up">
+            <div th:each="wish : ${wishlist}" class="col-md-4">
+            <div class="card shadow-sm border rounded-4" style="width: 24rem;">
+                    <img class="card-img-top" src="https://www.niemanlab.org/images/Viktoriaa-Liutova-e1624366176190.png" alt="Card image cap">
+                    <div class="card-body">
+                        <h5 class="card-title" th:text="${wish.title}"></h5>
+                        <p class="card-text">0 wishes</p>
+                        <a class="btn btn-primary" th:href="@{'/items/' + ${wish.id}}">Se ønskeliste</a>
+                    </div>
+                </div>
+               </div>
+        </div>
+    </div>
+</div>
 <a class="btn btn-success" type="button" th:href="@{'/create/wishlist'}">Add Wish</a>
+<a class="btn btn-danger" type="button" th:href="@{'/logout'}">Logout</a>
+
 </body>
 </html>
