@@ -48,8 +48,9 @@ public class WishlistController {
     }
 
     @GetMapping(path = "/wishlists")
-    public String getWishlists(Model model){
-        List<Wishlist> wishlists = wishlistRepository.getWishlists();
+    public String getWishlists(Model model, HttpSession session){
+        User user = (User) session.getAttribute("user");
+        List<Wishlist> wishlists = wishlistRepository.getUserWishlists(user.getId());
         model.addAttribute("wishlist", wishlists);
         return "wishlists";
     }
