@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
 
 @RequestMapping("/")
@@ -27,25 +28,18 @@ public class WishlistController {
     }
 
     @PostMapping("/login")
-    public String login(@RequestParam("email")String email,@RequestParam("pw") String pw,
-                        HttpSession session,
-                        Model model)
+    public String login(@RequestParam("email")String email, @RequestParam("pw") String pw, HttpSession session, Model model)
     {
         User user = wishlistRepository.getUser(email);
-        System.out.println(user);
-
-        if (user != null) {
+        if (user != null)
             if (user.getPassword().equals(pw)) {
                 session.setAttribute("user", user);
-                session.setMaxInactiveInterval(30);
-                return "wishlists";
+                session.setMaxInactiveInterval(60);
+                return "redirect:/wishlists";
             }
-        }
-        model.addAttribute("wrongCredentials", true);
-        return "login";
+        model.addAttribute("wrongLogin", true);
+        return "index";
     }
-
-
 
     @GetMapping(path = "/all")
     public ResponseEntity<List<Wishlist>> getWishlists(){
@@ -60,15 +54,30 @@ public class WishlistController {
         return "wishlists";
     }
 
-    @GetMapping("/addSignUp")
-    public String signUp() {
-        return "signup";
+    @GetMapping("/signup")
+    public String signUp(Model model) {
+        User user = new User();
+        model.addAttribute("user", user);
+        model.addAttribute("signUpError", "");
+        return "index";
     }
 
-    @PostMapping("/addSignUp")
-    public String addSignUp(@ModelAttribute("User") User signup) {
-        wishlistRepository.addSignUp(signup);
-        return "index";
+    @PostMapping("/signup")
+    public String addSignUp(@ModelAttribute("user") User user, HttpSession session, Model model) {
+        if(user.getName().length() < 1 || user.getEmail().length() < 1 || user.getPassword().length() < 1) {
+            model.addAttribute("signUpError", "Fill out all fields!");
+            return "index";
+        }
+        try {
+            session.setAttribute("user", user);
+            wishlistRepository.addSignUp(user);
+            return "redirect:/wishlists";
+        } catch (RuntimeException e) {
+            if (e.getCause() instanceof SQLIntegrityConstraintViolationException) {
+                model.addAttribute("signUpError", "Email is already registered.");
+            }
+            return "index";
+        }
     }
 
 

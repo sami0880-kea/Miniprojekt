@@ -1,0 +1,81 @@
+/* Navbar */
+
+.navbar img {
+    width: 165px;
+    height: 70px;
+    object-fit: cover;
+    justify-content: center;
+}
+
+.nav-item {
+    margin-left: 10px;
+}
+
+/* Header-Hero */
+
+
+.container-fluid {
+    height: 670px;
+    background-image: url(https://d.newsweek.com/en/full/1987927/pile-birthday-presents.jpg?w=1600&h=900&q=88&f=227afac77d8980a8142f36bdfb445c52);
+}
+
+
+.container-fluid .row {
+    padding-top: 10%;
+}
+
+
+.cover-inner {
+    color: white;
+}
+
+.cover-inner h1 {
+    font-size: 55px;
+}
+
+.cover-inner h3,
+h4 {
+    margin-top: 1%;
+}
+
+/* Description Section */
+
+
+.custom-section {
+    padding: 80px 0;
+}
+
+.custom-section .text-container {
+    padding-right: 30px;
+    text-align: center;
+}
+
+
+.custom-section .text-container h2 {
+    margin-top: 12%;
+}
+
+.custom-section .text-container p {
+    margin-top: 5%;
+    padding: 0px 27px;
+}
+
+
+.custom-section img {
+    max-width: 100%;
+    height: auto;
+}
+
+
+.col-sm-12 a {
+    margin-top: 1%;
+}
+
+
+/* Footer */
+
+.footer {
+    background-color: #f8f9fa;
+    padding: 20px;
+    text-align: center;
+}
