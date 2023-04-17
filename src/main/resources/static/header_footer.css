@@ -1,0 +1,20 @@
+/* Navbar */
+
+.navbar img {
+    width: 165px;
+    height: 70px;
+    object-fit: cover;
+    justify-content: center;
+}
+
+.nav-item {
+    margin-left: 10px;
+}
+
+/* Footer */
+
+.footer {
+    background-color: #f8f9fa;
+    padding: 20px;
+    text-align: center;
+}

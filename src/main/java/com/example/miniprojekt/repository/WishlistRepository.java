@@ -14,7 +14,7 @@ import java.util.List;
 public class WishlistRepository {
     private final String db_url = "jdbc:mysql://localhost:3306/wishlistdatabase";
     private final String uid = "root";
-    private final String pwd = "Samim123";
+    private final String pwd = "root";
 
     public List<Wishlist> getWishlists() {
         List<Wishlist> wishlists = new ArrayList<>();
@@ -220,6 +220,18 @@ public class WishlistRepository {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public void deleteWish (int wishlistID){
+        try(Connection con = DriverManager.getConnection(db_url,uid,pwd)) {
+            String SQL = "DELETE FROM wishlistItem WHERE wishlistItemId = ?;";
+            PreparedStatement pstmt = con.prepareStatement(SQL);
+            pstmt.setInt(1,wishlistID);
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 
     public void addSignUp (User signUp) {

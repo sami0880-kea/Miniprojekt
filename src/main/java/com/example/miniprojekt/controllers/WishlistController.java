@@ -107,6 +107,15 @@ public class WishlistController {
         return "redirect:/wishlists";
     }
 
+    @PostMapping("/create/item")
+    public String createWish(@RequestParam("wishlistId") int wishlistId, @RequestParam("name")String name, @RequestParam("description") String description, @RequestParam("url") String url, @RequestParam("imageUrl") String imageUrl, @RequestParam("price") double price,  @ModelAttribute("wishlistItem") WishlistItem wishlistItem, Model model) {
+        if(name.length() < 1 || description.length() < 1)
+            model.addAttribute("notFilled", true);
+        wishlistItem.setWishlistId(wishlistId);
+        wishlistRepository.addWishlistItem(wishlistItem);
+        return "redirect:/items/" + wishlistId;
+    }
+
     @GetMapping("/addItem/{id}")
     public String addItem(@PathVariable int id, Model model) {
         WishlistItem wishlistItem = new WishlistItem();
@@ -120,6 +129,13 @@ public class WishlistController {
         wishlistRepository.addWishlistItem(wishlistItem);
         return "redirect:/items/" + wishlistItem.getWishlistId();
     }
+
+    @GetMapping("/deleteItem/{id}")
+    public String deleteWish(@PathVariable int id){
+        wishlistRepository.deleteWish(id);
+        return "redirect:/wishlistItems";
+    }
+
 
     @GetMapping(path = "/item2/{id}")
     public ResponseEntity<List<WishlistItem>> getItem(@PathVariable int id){
