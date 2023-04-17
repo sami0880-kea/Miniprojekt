@@ -5,6 +5,7 @@ import com.example.miniprojekt.model.User;
 import com.example.miniprojekt.model.Wishlist;
 import com.example.miniprojekt.model.WishlistItem;
 import org.springframework.stereotype.Repository;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -12,9 +13,12 @@ import java.util.List;
 
 @Repository("wishlist")
 public class WishlistRepository {
-    private final String db_url = "jdbc:mysql://localhost:3306/wishlistdatabase";
-    private final String uid = "root";
-    private final String pwd = "Samim123";
+    @Value("${spring.datasource.url}")
+    String db_url;
+    @Value("${spring.datasource.username}")
+    String uid;
+    @Value("${spring.datasource.password}")
+    String pwd;
 
     public List<Wishlist> getWishlists() {
         List<Wishlist> wishlists = new ArrayList<>();

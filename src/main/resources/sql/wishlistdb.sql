@@ -1,6 +1,6 @@
-CREATE DATABASE IF NOT EXISTS wishlistDatabase DEFAULT CHARACTER SET utf8;
+CREATE DATABASE IF NOT EXISTS wishlistdatabase DEFAULT CHARACTER SET utf8;
 
-USE wishlistDatabase;
+USE wishlistdatabase;
 
 CREATE TABLE users (
   userId INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
@@ -15,7 +15,7 @@ CREATE TABLE wishlist (
   title VARCHAR(255) NOT NULL,
   description VARCHAR(255),
   createdAt DATETIME NOT NULL,
-  FOREIGN KEY (userId) REFERENCES user (userId)
+  FOREIGN KEY (userId) REFERENCES users (userId)
 );
 
 CREATE TABLE wishlistItem (
