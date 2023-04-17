@@ -106,15 +106,15 @@ public class WishlistRepository {
         }
     }
 
-    public List<WishlistItem> getWishlistItems2(int sWishlistId) {
-        List<WishlistItem> wishlistItems = new ArrayList<>();
+    public WishlistItem getItemId(int sItem) {
+        WishlistItem wishlistItem = null;
         try (Connection con = DriverManager.getConnection(db_url, uid, pwd))
         {
-            String SQL = "SELECT * FROM `wishlistItem` WHERE `wishlistId` = ?;";
+            String SQL = "SELECT * FROM `wishlistItem` WHERE `wishlistItemId` = ?;";
             PreparedStatement pstmt = con.prepareStatement(SQL);
-            pstmt.setInt(1, sWishlistId);
+            pstmt.setInt(1, sItem);
             ResultSet rs = pstmt.executeQuery();
-            while (rs.next()) {
+            if (rs.next()) {
                 int id = rs.getInt("wishlistItemId");
                 String name = rs.getString("name");
                 String description = rs.getString("description");
@@ -123,13 +123,14 @@ public class WishlistRepository {
                 String imageUrl = rs.getString("imageUrl");
                 Date createdAt = rs.getDate("createdAt");
                 int wishlistId = rs.getInt("wishlistId");
-                wishlistItems.add(new WishlistItem(id, name, description, price, url, imageUrl, createdAt, wishlistId));
+                wishlistItem = (new WishlistItem(id, name, description, price, url, imageUrl, createdAt, wishlistId));
             }
-            return wishlistItems;
+            return wishlistItem;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
+
 
     public WishlistItemDTO getWishlistItems(int sWishlistId) {
         try (Connection con = DriverManager.getConnection(db_url, uid, pwd))
@@ -234,15 +235,15 @@ public class WishlistRepository {
 
     }
 
-    public void addSignUp (User signUp) {
+    public String addSignUp (User signUp) {
         try (Connection con = DriverManager.getConnection(db_url, uid, pwd)) {
             String SQL = "INSERT INTO user (name, email, password) VALUES (?, ?, ?);";
             PreparedStatement pstmt = con.prepareStatement(SQL);
             pstmt.setString(1, signUp.getName());
             pstmt.setString(2, signUp.getEmail());
             pstmt.setString(3, signUp.getPassword());
-
             pstmt.executeUpdate();
+            return signUp.getEmail();
         } catch (SQLIntegrityConstraintViolationException e) {
             throw new RuntimeException("Email already exists", e);
         } catch (SQLException e) {

@@ -40,7 +40,7 @@ public class WishlistController {
         if (user != null)
             if (user.getPassword().equals(pw)) {
                 session.setAttribute("user", user);
-                session.setMaxInactiveInterval(60);
+                session.setMaxInactiveInterval(21600);
                 return "redirect:/wishlists";
             }
         model.addAttribute("wrongLogin", true);
@@ -78,8 +78,8 @@ public class WishlistController {
             return "index";
         }
         try {
-            session.setAttribute("user", user);
-            wishlistRepository.addSignUp(user);
+            session.setAttribute("user", wishlistRepository.getUser(wishlistRepository.addSignUp(user)));
+            session.setMaxInactiveInterval(21600);
             return "redirect:/wishlists";
         } catch (RuntimeException e) {
             if (e.getCause() instanceof SQLIntegrityConstraintViolationException) {
@@ -111,6 +111,8 @@ public class WishlistController {
     public String createWish(@RequestParam("wishlistId") int wishlistId, @RequestParam("name")String name, @RequestParam("description") String description, @RequestParam("url") String url, @RequestParam("imageUrl") String imageUrl, @RequestParam("price") double price,  @ModelAttribute("wishlistItem") WishlistItem wishlistItem, Model model) {
         if(name.length() < 1 || description.length() < 1)
             model.addAttribute("notFilled", true);
+        if(!(imageUrl.length() > 1))
+            wishlistItem.setImageUrl("https://rushcountyfoundation.org/wp-content/uploads/2015/12/gift-06.jpg");
         wishlistItem.setWishlistId(wishlistId);
         wishlistRepository.addWishlistItem(wishlistItem);
         return "redirect:/items/" + wishlistId;
@@ -132,8 +134,9 @@ public class WishlistController {
 
     @GetMapping("/deleteItem/{id}")
     public String deleteWish(@PathVariable int id){
+        int wishlistId = wishlistRepository.getItemId(id).getWishlistId();
         wishlistRepository.deleteWish(id);
-        return "redirect:/wishlistItems";
+        return "redirect:/items/" + wishlistId;
     }
 
 
