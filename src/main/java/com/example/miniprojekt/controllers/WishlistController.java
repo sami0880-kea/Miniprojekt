@@ -27,6 +27,12 @@ public class WishlistController {
         return "index";
     }
 
+    @GetMapping("/logout")
+    public String logout(HttpSession session) {
+        session.invalidate();
+        return "index";
+    }
+
     @PostMapping("/login")
     public String login(@RequestParam("email")String email, @RequestParam("pw") String pw, HttpSession session, Model model)
     {
@@ -52,6 +58,8 @@ public class WishlistController {
         User user = (User) session.getAttribute("user");
         List<Wishlist> wishlists = wishlistRepository.getUserWishlists(user.getId());
         model.addAttribute("wishlist", wishlists);
+        model.addAttribute("userName", user.getName());
+        model.addAttribute("cUserId", user.getId());
         return "wishlists";
     }
 
@@ -82,17 +90,21 @@ public class WishlistController {
     }
 
 
-    @GetMapping("/create/wishlist")
-    public String createWishlist(Model model) {
+    @GetMapping("/create/wishlist/{id}")
+    public String createWishlist(@PathVariable int id, Model model) {
         Wishlist wishlist = new Wishlist();
+        wishlist.setUserId(id);
         model.addAttribute("wishlist", wishlist);
-        return "createWishlist";
+        return "wishlists";
     }
 
     @PostMapping("/create/wishlist")
-    public String createWishlist(@ModelAttribute("wishlist") Wishlist wishlist) {
+    public String createWishlist(@RequestParam("userId") int userId, @RequestParam("title")String title, @RequestParam("description") String description, @ModelAttribute("wishlist") Wishlist wishlist, Model model) {
+        if(title.length() < 1 || description.length() < 1)
+            model.addAttribute("notFilled", true);
+        wishlist.setUserId(userId);
         wishlistRepository.createWishlist(wishlist);
-        return "wishlistCreated";
+        return "redirect:/wishlists";
     }
 
     @GetMapping("/addItem/{id}")

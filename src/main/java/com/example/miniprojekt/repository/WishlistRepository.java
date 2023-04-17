@@ -171,11 +171,13 @@ public class WishlistRepository {
     public void createWishlist(Wishlist wishlist) {
         try (Connection con = DriverManager.getConnection(db_url, uid, pwd))
         {
-            String SQL = "INSERT INTO `wishlist` (`userId`, `title`, `description`, `createdAt`) VALUES (1, ?, ?, ?);";
+            String SQL = "INSERT INTO `wishlist` (`userId`, `title`, `description`, `createdAt`) VALUES (?, ?, ?, ?);";
             PreparedStatement pstmt = con.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS);
-            pstmt.setString(1, wishlist.getTitle());
-            pstmt.setString(2, wishlist.getDescription());
-            pstmt.setDate(3, new java.sql.Date(new java.util.Date().getTime()));
+
+            pstmt.setInt(1, wishlist.getUserId());
+            pstmt.setString(2, wishlist.getTitle());
+            pstmt.setString(3, wishlist.getDescription());
+            pstmt.setDate(4, new java.sql.Date(new java.util.Date().getTime()));
 
             pstmt.executeUpdate();
         } catch (SQLException e) {
