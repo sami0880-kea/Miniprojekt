@@ -42,8 +42,8 @@
       <!-- Knapper i højre side -->
       <ul class="navbar-nav">
         <li class="nav-item">
-          <a class="btn btn-dark" style="margin-left: 1em" type="button" th:href="@{'/wishlists'}">Back</a>
-          <a class="btn btn-danger" style="margin-left: 1em" type="button" th:href="@{'/logout'}">Log out</a>
+          <a class="btn btn-dark bg-gradient" style="margin-left: 1em" type="button" th:href="@{'/wishlists'}">Back</a>
+          <a class="btn btn-danger bg-gradient" style="margin-left: 1em" type="button" th:href="@{'/logout'}">Log out</a>
         </li>
       </ul>
     </div>
@@ -68,11 +68,9 @@
             <h5 class="card-title" th:text="${item.name}"></h5>
             <p class="card-text" th:text="${item.description}"></p>
             <h5 class="card-text font-weight-bold" th:text="${item.price} + ' DKK' "></h5>
-            <a class="btn btn-primary" th:href="${item.url}"><i class="bi bi-box-arrow-up-right"></i> Go to</a>
-            <a class="btn btn-danger" type="button" th:href="@{'/deleteItem/' + ${item.id}}"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
-              <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6Z"/>
-              <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1ZM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118ZM2.5 3h11V2h-11v1Z"/>
-            </svg></a>
+            <a class="btn btn-primary bg-gradient" th:href="${item.url}"><i class="bi bi-box-arrow-up-right"></i> Go to</a>
+            <a class="btn btn-warning bg-gradient" type="button" th:action="${updateItem.updateInfo(item.getId(), item.getName(), item.getDescription(), item.getPrice(), item.getUrl(), item.getImageUrl(), item.getWishlistId())}" data-bs-toggle="modal" data-bs-target="#editWishModal"><i class="bi bi-pencil-square" style="color: white"></i></a>
+            <a class="btn btn-danger bg-gradient" type="button" th:href="@{'/deleteItem/' + ${item.id}}"><i class="bi bi-trash"></i></a>
           </div>
         </div>
       </div>
@@ -124,7 +122,49 @@
             <input type="number" name="price" class="form-control border border-primary">
           </div>
           <div class="d-grid">
-            <button class="btn btn-primary p-2 m-1" type="submit">Create Wish</button>
+            <button class="btn btn-primary bg-gradient p-2 m-1" type="submit">Create Wish</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="editWishModal" tabindex="-1" aria-labelledby="editWishModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="editWishModalLabel">Edit Wish</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form action="/update/wishlistItem" method="post" th:object="${wishlistItem}">
+          <div>
+            <input type="hidden" name="id" th:value="${updateItem.getId()}" />
+            <input type="hidden" name="wishlistId" th:value="${updateItem.getWishlistId()}" />
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Name</label>
+            <input type="text" name="name" th:value="${updateItem.getName()}" class="form-control border border-primary">
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Description</label>
+            <input type="text" name="description" th:value="${updateItem.getDescription()}" class="form-control border border-primary">
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Link</label>
+            <input type="text" name="url" th:value="${updateItem.getUrl()}" class="form-control border border-primary">
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Image</label>
+            <input type="text" name="imageUrl" th:value="${updateItem.getImageUrl()}" class="form-control border border-primary">
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Price</label>
+            <input type="number" name="price" th:value="${updateItem.getPrice()}" class="form-control border border-primary">
+          </div>
+          <div class="d-grid">
+            <button class="btn btn-primary bg-gradient p-2 m-1" type="submit">Edit Wish</button>
           </div>
         </form>
       </div>

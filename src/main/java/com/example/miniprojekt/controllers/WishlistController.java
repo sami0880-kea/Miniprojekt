@@ -60,6 +60,7 @@ public class WishlistController {
         model.addAttribute("wishlist", wishlists);
         model.addAttribute("userName", user.getName());
         model.addAttribute("cUserId", user.getId());
+        model.addAttribute("updateWishlist", new Wishlist());
         return "wishlists";
     }
 
@@ -107,6 +108,18 @@ public class WishlistController {
         return "redirect:/wishlists";
     }
 
+    @PostMapping("/update/wishlist")
+    public String updateWishlist(@RequestParam("id")String id, @RequestParam("title")String title, @RequestParam("description") String description, @ModelAttribute("wishlist") Wishlist wishlist) {
+        wishlistRepository.updateWishlist(wishlist);
+        return "redirect:/wishlists";
+    }
+
+    @PostMapping("/update/wishlistItem")
+    public String updateWishlistItem(@RequestParam("id") int id, @RequestParam("name")String name, @RequestParam("description") String description, @RequestParam("price") double price, @RequestParam("url") String url, @RequestParam("imageUrl") String imageUrl, @RequestParam("wishlistId") String wishlistId, @ModelAttribute("wishlistItem") WishlistItem wishlistItem) {
+        wishlistRepository.updateWishlistItem(wishlistItem);
+        return "redirect:/items/" + wishlistId;
+    }
+
     @PostMapping("/create/item")
     public String createWish(@RequestParam("wishlistId") int wishlistId, @RequestParam("name")String name, @RequestParam("description") String description, @RequestParam("url") String url, @RequestParam("imageUrl") String imageUrl, @RequestParam("price") double price,  @ModelAttribute("wishlistItem") WishlistItem wishlistItem, Model model) {
         if(name.length() < 1 || description.length() < 1)
@@ -151,19 +164,13 @@ public class WishlistController {
         WishlistItemDTO wishlistItems = wishlistRepository.getWishlistItems(id);
         model.addAttribute("wishlistTitle", wishlistItems.getWishlistTitle());
         model.addAttribute("wishlistId", id);
-
         model.addAttribute("itemList", wishlistItems.getWishlistItems());
+        model.addAttribute("updateItem", new WishlistItem());
         return "wishlistItems";
     }
 
-    @GetMapping(path = "/wishlist/{id}")
-    public ResponseEntity<List<Wishlist>> getWishlist(@PathVariable int id){
-        List<Wishlist> wishlist = wishlistRepository.getWishlist(id);
-        return new ResponseEntity<>(wishlist, HttpStatus.OK);
-    }
-
     @GetMapping("/delete/{id}")
-    public String deleteSuperhero(@PathVariable int id){
+    public String deleteWishlist(@PathVariable int id){
         wishlistRepository.deleteWishlist(id);
         return "redirect:/wishlists";
     }

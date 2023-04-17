@@ -32,6 +32,15 @@ public class WishlistItem {
         this.wishlistId = wishlistId;
     }
 
+    public void updateInfo(int id, String name, String description, double price, String url, String imageUrl, int wishlistId) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.price = price;
+        this.url = url;
+        this.imageUrl = imageUrl;
+        this.wishlistId = wishlistId;
+    }
     public int getId() {
         return id;
     }

@@ -19,6 +19,12 @@ public class Wishlist {
         this.userId = userId;
     }
 
+    public void updateInfo(int id, String title, String description) {
+        this.id = id;
+        this.title = title;
+        this.description = description;
+    }
+
     public int getId() {
         return id;
     }

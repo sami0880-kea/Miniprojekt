@@ -59,11 +59,11 @@ public class WishlistRepository {
         }
     }
 
-    public List<Wishlist> getWishlist(int sWisthlist) {
-        List<Wishlist> wishlists = new ArrayList<>();
+    public Wishlist getWishlist(int sWisthlist) {
+        Wishlist wishlist = null;
         try (Connection con = DriverManager.getConnection(db_url, uid, pwd))
         {
-            String SQL = "SELECT * FROM `wishlist` WHERE `userId` = ?;";
+            String SQL = "SELECT * FROM `wishlist` WHERE `wishlistId` = ?;";
             PreparedStatement pstmt = con.prepareStatement(SQL);
             pstmt.setInt(1, sWisthlist);
             ResultSet rs = pstmt.executeQuery();
@@ -73,9 +73,9 @@ public class WishlistRepository {
                 String description = rs.getString("description");
                 Date createdAt = rs.getDate("createdAt");
                 int userId = rs.getInt("userId");
-                wishlists.add(new Wishlist(id, title, description, createdAt, userId));
+                wishlist = new Wishlist(id, title, description, createdAt, userId);
             }
-            return wishlists;
+            return wishlist;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -186,6 +186,22 @@ public class WishlistRepository {
         }
     }
 
+    public void updateWishlist(Wishlist wishlist) {
+        try (Connection con = DriverManager.getConnection(db_url, uid, pwd)) {
+            String SQL = "UPDATE `wishlist` SET `title`=?, `description`=? WHERE `wishlistId`=?;";
+            PreparedStatement pstmt = con.prepareStatement(SQL);
+
+            pstmt.setString(1, wishlist.getTitle());
+            pstmt.setString(2, wishlist.getDescription());
+            pstmt.setInt(3, wishlist.getId());
+
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
     public void deleteWishlist (int wishlistID){
         try(Connection con = DriverManager.getConnection(db_url,uid,pwd)) {
             String SQL = "DELETE FROM wishlistItem WHERE wishlistId = ?;";
@@ -217,6 +233,22 @@ public class WishlistRepository {
             pstmt.setDate(6, new java.sql.Date(new java.util.Date().getTime()));
             pstmt.setInt(7, wishlistItem.getWishlistId());
 
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void updateWishlistItem(WishlistItem wishlistItem) {
+        try (Connection con = DriverManager.getConnection(db_url, uid, pwd)) {
+            String SQL = "UPDATE wishlistItem SET `name`=?, `description`=?, `price`=?, `url`=?, `imageUrl`=? WHERE `wishlistItemId`=?";
+            PreparedStatement pstmt = con.prepareStatement(SQL);
+            pstmt.setString(1, wishlistItem.getName());
+            pstmt.setString(2, wishlistItem.getDescription());
+            pstmt.setDouble(3, wishlistItem.getPrice());
+            pstmt.setString(4, wishlistItem.getUrl());
+            pstmt.setString(5, wishlistItem.getImageUrl());
+            pstmt.setInt(6, wishlistItem.getId());
             pstmt.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
